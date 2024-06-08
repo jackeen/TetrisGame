@@ -12,7 +12,7 @@ namespace TetrisGame
     {
 
         int gap = 1;
-        int pixelSize = 9;
+        int pixelSize = 11;
 
         Color closeColor = Color.FromArgb(30, 30, 30);
         Color openColor = Color.FromArgb(90, 90, 90);

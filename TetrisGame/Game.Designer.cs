@@ -58,7 +58,7 @@
             // 
             // timerMoveDown
             // 
-            this.timerMoveDown.Interval = 500;
+            this.timerMoveDown.Interval = 300;
             this.timerMoveDown.Tick += new System.EventHandler(this.timerMoveDown_Tick);
             // 
             // btnLeft

@@ -31,8 +31,8 @@ namespace TetrisGame
             this.Height = 600;
             this.AutoSize = false;
 
-            int pixelsX = 30;
-            int pixelsY = 50;
+            int pixelsX = 20;
+            int pixelsY = 40;
 
             int offsetLeft = 50;
             int offsetTop = 20;
@@ -47,7 +47,21 @@ namespace TetrisGame
             screenBg.Height = ds.GetHeight();
             screenBg.SendToBack();
 
-            stage = new Stage(30, 50, screen);
+            stage = new Stage(pixelsY, pixelsX, screen);
+            stage.blockStucked += Stage_blockStucked;
+        }
+
+        private Block GetRandomBlock()
+        {
+            return new LShape();
+        }
+
+        private void Stage_blockStucked(object sender, EventArgs e)
+        {
+            //MessageBox.Show("block stucked");
+            //stage.DropBlock(0, 8, GetRandomBlock());
+            timerUpdate.Enabled = false;
+            timerMoveDown.Enabled = false;
         }
 
         private void game_Load(object sender, EventArgs e)
@@ -57,10 +71,7 @@ namespace TetrisGame
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            LShape l = new LShape();
-
-            stage.AddBlock(0, 10 , l);
-
+            stage.DropBlock(0, 8, GetRandomBlock());
             timerUpdate.Enabled = true;
             timerMoveDown.Enabled = true;
         }
