@@ -32,54 +32,84 @@ namespace TetrisGame
 
         public void AddBlock(int y, int x, Block block)
         {
-            block.X = block.X0 = x;
-            block.Y = block.Y0 = y;
-            block.Data.ForEach((p) =>
-            {
-                (int, int) absPixel = (p.Item1 + y, p.Item2 + x);
-                screen.Draw(absPixel);
-            });
-
+            block.X = x;
+            block.Y = y;
             activeBlock = block;
 
             SetLimitForActiveBlock();
+            recordHistoryPosition();
+            DrawActiveBlock();
+        }
+
+        private void recordHistoryPosition()
+        {
+            activeBlock.historyPoint.Enqueue((activeBlock.Y, activeBlock.X));
         }
 
         public void MoveActiveToRight()
         {
+            recordHistoryPosition();
+
             int x = activeBlock.X + 1;
             if (x > activeBlock.limitX)
             {
                 x = activeBlock.limitX;
             }
-            activeBlock.X0 = activeBlock.X;
             activeBlock.X = x;
         }
 
         public void MoveActiveToLeft()
         {
+            recordHistoryPosition();
+
             int x = activeBlock.X - 1;
             if (x < 0)
             {
                 x = 0;
             }
-            activeBlock.X0 = activeBlock.X;
             activeBlock.X = x;
+        }
+
+        public void MoveActiveDown()
+        {
+            recordHistoryPosition();
+
+            int y = activeBlock.Y + 1;
+            if (y > activeBlock.limitY)
+            {
+                y = activeBlock.limitY;
+            }
+            activeBlock.Y = y;
+        }
+
+        public void CleanActiveBlock()
+        {
+            // consume the history of movement
+            if (activeBlock.historyPoint.Count > 0)
+            {
+                (int y, int x) blockPoint = activeBlock.historyPoint.Dequeue();
+                activeBlock.Data.ForEach(((int y, int x) p) =>
+                {
+                    (int, int) absPixel = (p.y + blockPoint.y, p.x + blockPoint.x);
+                    screen.Clean(absPixel);
+                });
+            }
+
+        }
+
+        public void DrawActiveBlock()
+        {
+            activeBlock.Data.ForEach(((int y, int x) p) =>
+            {
+                (int, int) absPixel = (p.y + activeBlock.Y, p.x + activeBlock.X);
+                screen.Draw(absPixel);
+            });
         }
 
         public void Update()
         {
-            activeBlock.Data.ForEach((p) =>
-            {
-                (int, int) absPixel = (p.Item1 + activeBlock.Y0, p.Item2 + activeBlock.X0);
-                screen.Clean(absPixel);
-            });
-
-            activeBlock.Data.ForEach((p) =>
-            {
-                (int, int) absPixel = (p.Item1 + activeBlock.Y, p.Item2 + activeBlock.X);
-                screen.Draw(absPixel);
-            });
+            CleanActiveBlock();
+            DrawActiveBlock();
         }
     }
 }

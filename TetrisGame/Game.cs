@@ -16,11 +16,13 @@ namespace TetrisGame
         DotScreen screen;
         Stage stage;
 
+        //Queue<Action> movementQueue;
+
         public Game()
         {
             InitializeComponent();
 
-
+            //movementQueue = new Queue<Action>();
         }
 
         private void SetpuPlayGround()
@@ -57,36 +59,57 @@ namespace TetrisGame
         {
             LShape l = new LShape();
 
-            stage.AddBlock(5, 1 , l);
+            stage.AddBlock(0, 10 , l);
 
             timerUpdate.Enabled = true;
-
+            timerMoveDown.Enabled = true;
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
+            //MessageBox.Show(e.KeyCode.ToString());
             switch (e.KeyCode.ToString())
             {
                 case "Left":
+                    stage.MoveActiveToLeft();
                     break;
                 case "Right":
+                    stage.MoveActiveToRight();
                     break;
             }
         }
 
         private void btnLeft_Click(object sender, EventArgs e)
         {
+            
             stage.MoveActiveToLeft();
         }
 
         private void btnRight_Click(object sender, EventArgs e)
         {
+            
             stage.MoveActiveToRight();
         }
 
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
+            /*
+            Action movement;
+            if (movementQueue.Count > 0)
+            {
+                movement = movementQueue.Dequeue();
+                movement();
+            }
+            */
+
             stage.Update();
+        }
+
+        private void timerMoveDown_Tick(object sender, EventArgs e)
+        {
+            
+            //movementQueue.Enqueue(stage.Update);
+            stage.MoveActiveDown();
         }
     }
 }

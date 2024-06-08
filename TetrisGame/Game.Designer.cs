@@ -48,7 +48,7 @@
             // btnPlay
             // 
             this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlay.Location = new System.Drawing.Point(956, 54);
+            this.btnPlay.Location = new System.Drawing.Point(949, 12);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(301, 115);
             this.btnPlay.TabIndex = 1;
@@ -59,6 +59,7 @@
             // timerMoveDown
             // 
             this.timerMoveDown.Interval = 500;
+            this.timerMoveDown.Tick += new System.EventHandler(this.timerMoveDown_Tick);
             // 
             // btnLeft
             // 

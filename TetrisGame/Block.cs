@@ -10,13 +10,15 @@ namespace TetrisGame
     {
         public List<(int, int)> Data;
         public int Y, X;
-        public int Y0, X0;
+        
+
+        public Queue<(int, int)> historyPoint;
 
         public int limitY, limitX;
 
         public Block()
         {
-
+            historyPoint = new Queue<(int, int)>();
         }
 
         public (int, int) GetSize()
