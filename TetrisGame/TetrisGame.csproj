@@ -54,6 +54,7 @@
     <Compile Include="Game.Designer.cs">
       <DependentUpon>Game.cs</DependentUpon>
     </Compile>
+    <Compile Include="HShape.cs" />
     <Compile Include="IShape.cs" />
     <Compile Include="LShape.cs" />
     <Compile Include="OShape.cs" />

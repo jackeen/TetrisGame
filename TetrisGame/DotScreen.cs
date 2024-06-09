@@ -78,8 +78,5 @@ namespace TetrisGame
             pixelMetrix[pixel.y, pixel.x].BackColor = openColor;
         }
 
-
-
-
     }
 }

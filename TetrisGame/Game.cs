@@ -21,6 +21,9 @@ namespace TetrisGame
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Initilize the dotscreen for the game, 
+        /// </summary>
         private void SetpuPlayGround()
         {
             this.Width = 800;
@@ -45,40 +48,52 @@ namespace TetrisGame
 
             stage = new Stage(pixelsY, pixelsX, screen);
             stage.blockStucked += Stage_blockStucked;
-
+            stage.linesCleaned += Stage_linesCleaned;
             
         }
 
+        private void Stage_linesCleaned(object sender, LineCleanEventArgs e)
+        {
+            MessageBox.Show($"cut {e.lineNumber} line(s).");
+        }
+
+        /// <summary>
+        /// Return the random block with existed shape
+        /// </summary>
+        /// <returns></returns>
         private Block GetRandomBlock()
         {
             Random r = new Random();
-            int n = r.Next(0, 3);
-
-            Block b;
+            int n = r.Next(0, 5);
 
             switch (n)
             {
                 case 0:
-                    b = new LShape();
-                    break;
+                    return new LShape();
+                    
                 case 1:
-                    b = new ZShape();
-                    break;
+                    return new ZShape();
+                    
                 case 2:
-                    b = new IShape();
-                    break;
-                default:
-                    b = new OShape();
-                    break;
+                    return new IShape();
+                    
+                case 3:
+                    return new OShape();
+
+                case 4:
+                    return new HShape();
 
             }
-            return b;
+            return new OShape();
         }
 
+        /// <summary>
+        /// The event handler for the stage detect a block hit the bottom or other existed point in the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Stage_blockStucked(object sender, EventArgs e)
         {
-            //MessageBox.Show("block stucked");
-            //stage.DropBlock(0, 8, GetRandomBlock());
             timerUpdate.Enabled = false;
             timerMoveDown.Enabled = false;
         }
@@ -128,22 +143,11 @@ namespace TetrisGame
 
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
-            /*
-            Action movement;
-            if (movementQueue.Count > 0)
-            {
-                movement = movementQueue.Dequeue();
-                movement();
-            }
-            */
-
             stage.Update();
         }
 
         private void timerMoveDown_Tick(object sender, EventArgs e)
         {
-            
-            //movementQueue.Enqueue(stage.Update);
             stage.MoveActiveDown();
         }
 

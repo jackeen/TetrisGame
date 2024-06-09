@@ -13,10 +13,12 @@ namespace TetrisGame
         private DotScreen screen;
         private Block activeBlock;
 
-        private HashSet<(int, int)>[] existedPoint;
+        // 
+        private HashSet<(int, int)>[] existedPointsFromBlock;
 
-        //private bool activeBlockDisconnected = false;
+        
         public event EventHandler blockStucked;
+        public event EventHandler<LineCleanEventArgs> linesCleaned;
 
         public Stage(int h, int w, DotScreen ds)
         {
@@ -26,10 +28,10 @@ namespace TetrisGame
 
             // init bottom pixels expressed by (int y, int x)
             // and each line wrapped in a set
-            existedPoint = new HashSet<(int, int)>[h];
+            existedPointsFromBlock = new HashSet<(int, int)>[h];
             for (int y = 0; y < h; y++)
             {
-                existedPoint[y] = new HashSet<(int, int)>();
+                existedPointsFromBlock[y] = new HashSet<(int, int)>();
             }
         }
 
@@ -40,6 +42,12 @@ namespace TetrisGame
             activeBlock.limitY = height - size.h;
         }
 
+        /// <summary>
+        /// Drop a block to the stage for next controling by player
+        /// </summary>
+        /// <param name="y"></param>
+        /// <param name="x"></param>
+        /// <param name="block"></param>
         public void DropBlock(int y, int x, Block block)
         {
             block.X = x;
@@ -51,6 +59,9 @@ namespace TetrisGame
             DrawActiveBlock();
         }
 
+        /// <summary>
+        /// record the current position and its current shape of the screen in the queue
+        /// </summary>
         private void recordHistoryPosition()
         {
             activeBlock.historyPoint.Enqueue((activeBlock.Y, activeBlock.X, activeBlock.ShapeNum));
@@ -119,8 +130,7 @@ namespace TetrisGame
             if (res)
             {
                 FillBlockToExistedGroup();
-                
-                blockStucked?.Invoke(this, EventArgs.Empty);
+                blockFixed();
                 return;
             }
 
@@ -129,11 +139,84 @@ namespace TetrisGame
             {
                 y = activeBlock.limitY;
                 FillBlockToExistedGroup();
-                
-                blockStucked?.Invoke(this, EventArgs.Empty);
+                blockFixed();
             }
             activeBlock.Y = y;
             
+        }
+
+        private void blockFixed()
+        {
+            blockStucked?.Invoke(this, EventArgs.Empty);
+            detectAndCleanFullLines();
+        }
+
+        private void detectAndCleanFullLines()
+        {
+            int fullLineNum = 0;
+
+            // store the line includes the number of point over 0 but not full
+            Stack<HashSet<(int, int)>> temp = new Stack<HashSet<(int, int)>>();
+
+            for (int i = 0; i < height; i++)
+            {
+                HashSet<(int, int)> line = existedPointsFromBlock[i];
+
+                int lineElementNum = line.Count;
+                if (lineElementNum == width)
+                {
+                    fullLineNum++;
+                    line.Clear();
+                    continue;
+                }
+                if (lineElementNum > 0)
+                {
+                    temp.Push(line);
+                    existedPointsFromBlock[i] = new HashSet<(int, int)>();
+                }
+            }
+
+            // copy not empty lines back and update its position data
+            int index = height - 1;
+            while (temp.Count > 0)
+            {
+                HashSet<(int, int)> oldLine = temp.Pop();
+                HashSet<(int, int)> newLine = new HashSet<(int, int)>();
+
+                foreach ((int y, int x) pixel in oldLine)
+                {
+                    newLine.Add((index, pixel.x));
+                }
+
+                existedPointsFromBlock[index] = newLine;
+                index--;
+            }
+
+            if (fullLineNum > 0)
+            {
+                RedrawScreen();
+                LineCleanEventArgs eventArgs = new LineCleanEventArgs();
+                eventArgs.lineNumber = fullLineNum;
+                linesCleaned?.Invoke(this, eventArgs);
+            }
+            
+        }
+
+        private void RedrawScreen()
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    screen.Clean((i, j));
+                }
+
+                HashSet<(int, int)> line = existedPointsFromBlock[i];
+                foreach ((int y, int x) pixel in line)
+                {
+                    screen.Draw(pixel);
+                }
+            }
         }
 
         private bool detectCollisionX(int blockY, int blockX)
@@ -141,7 +224,7 @@ namespace TetrisGame
 
             for (int i = 0; i < height; i++)
             {
-                HashSet<(int, int)> line = existedPoint[i];
+                HashSet<(int, int)> line = existedPointsFromBlock[i];
 
                 foreach ((int y, int x) pixel in activeBlock.Data)
                 {
@@ -164,7 +247,7 @@ namespace TetrisGame
         {
             for (int i = 0; i < height; i++)
             {
-                HashSet<(int, int)> line = existedPoint[i];
+                HashSet<(int, int)> line = existedPointsFromBlock[i];
 
                 foreach((int y, int x) pixel in activeBlock.Data)
                 {
@@ -189,7 +272,7 @@ namespace TetrisGame
             {
                 int absY = pixel.y + activeBlock.Y;
                 int absX = pixel.x + activeBlock.X;
-                existedPoint[absY].Add((absY, absX));
+                existedPointsFromBlock[absY].Add((absY, absX));
             }
         }
 
@@ -236,6 +319,17 @@ namespace TetrisGame
 
             CleanActiveBlock();
             DrawActiveBlock();
+        }
+    }
+
+    public class LineCleanEventArgs: EventArgs
+    {
+
+        public int lineNumber;
+
+        public LineCleanEventArgs()
+        {
+
         }
     }
 }
