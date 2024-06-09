@@ -35,6 +35,7 @@
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnRight = new System.Windows.Forms.Button();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.btnRotate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // screenBg
@@ -64,7 +65,7 @@
             // btnLeft
             // 
             this.btnLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLeft.Location = new System.Drawing.Point(949, 227);
+            this.btnLeft.Location = new System.Drawing.Point(799, 227);
             this.btnLeft.Name = "btnLeft";
             this.btnLeft.Size = new System.Drawing.Size(151, 141);
             this.btnLeft.TabIndex = 2;
@@ -75,7 +76,7 @@
             // btnRight
             // 
             this.btnRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRight.Location = new System.Drawing.Point(1106, 227);
+            this.btnRight.Location = new System.Drawing.Point(1162, 227);
             this.btnRight.Name = "btnRight";
             this.btnRight.Size = new System.Drawing.Size(151, 141);
             this.btnRight.TabIndex = 3;
@@ -87,12 +88,24 @@
             // 
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
+            // btnRotate
+            // 
+            this.btnRotate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRotate.Location = new System.Drawing.Point(981, 227);
+            this.btnRotate.Name = "btnRotate";
+            this.btnRotate.Size = new System.Drawing.Size(151, 141);
+            this.btnRotate.TabIndex = 4;
+            this.btnRotate.Text = "Rotate";
+            this.btnRotate.UseVisualStyleBackColor = true;
+            this.btnRotate.Click += new System.EventHandler(this.btnRotate_Click);
+            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(1529, 856);
+            this.Controls.Add(this.btnRotate);
             this.Controls.Add(this.btnRight);
             this.Controls.Add(this.btnLeft);
             this.Controls.Add(this.btnPlay);
@@ -114,6 +127,7 @@
         private System.Windows.Forms.Button btnLeft;
         private System.Windows.Forms.Button btnRight;
         private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.Button btnRotate;
     }
 }
 

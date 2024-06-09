@@ -54,7 +54,7 @@ namespace TetrisGame
 
         private void recordHistoryPosition()
         {
-            activeBlock.historyPoint.Enqueue((activeBlock.Y, activeBlock.X));
+            activeBlock.historyPoint.Enqueue((activeBlock.Y, activeBlock.X, activeBlock.ShapeNum));
         }
 
         public void MoveActiveToRight()
@@ -194,13 +194,20 @@ namespace TetrisGame
             }
         }
 
+        public void RotateActiveBlock()
+        {
+            recordHistoryPosition();
+            activeBlock.Rotate();
+            SetLimitForActiveBlock();
+        }
+
         public void CleanActiveBlock()
         {
             // consume the history of movement
             if (activeBlock.historyPoint.Count > 0)
             {
-                (int y, int x) blockPoint = activeBlock.historyPoint.Dequeue();
-                activeBlock.Data.ForEach(((int y, int x) p) =>
+                (int y, int x, int shapeN) blockPoint = activeBlock.historyPoint.Dequeue();
+                activeBlock.Shapes[blockPoint.shapeN].ForEach(((int y, int x) p) =>
                 {
                     (int, int) absPixel = (p.y + blockPoint.y, p.x + blockPoint.x);
                     screen.Clean(absPixel);

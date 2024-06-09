@@ -8,19 +8,35 @@ namespace TetrisGame
 {
     internal class Block
     {
+        // current shape data
         public List<(int, int)> Data;
-        public int Y, X;
         
+        // as a block, they have 4 shapes normally
+        public List<(int, int)>[] Shapes;
 
-        public Queue<(int, int)> historyPoint;
+        // the current shape number to index a shape in "shapes"
+        public int ShapeNum = 0;
 
+        // to record the movement history for a block
+        // ????
+        public Queue<(int, int, int)> historyPoint;
+
+        // the X and Y border for limiting the block moving 
         public int limitY, limitX;
+
+        // current point of the block 
+        public int Y, X;
 
         public Block()
         {
-            historyPoint = new Queue<(int, int)>();
+            historyPoint = new Queue<(int, int, int)>();
+            Shapes = new List<(int, int)>[4];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public (int, int) GetSize()
         {
             int h = 0;
@@ -33,6 +49,17 @@ namespace TetrisGame
             });
 
             return (h + 1, w + 1);
+        }
+
+        public void Rotate()
+        {
+            ShapeNum++;
+            if (ShapeNum > 3)
+            {
+                ShapeNum = 0;
+            }
+
+            Data = Shapes[ShapeNum];
         }
     }
 }

@@ -31,8 +31,8 @@ namespace TetrisGame
             this.Height = 600;
             this.AutoSize = false;
 
-            int pixelsX = 20;
-            int pixelsY = 40;
+            int pixelsX = 16;
+            int pixelsY = 32;
 
             int offsetLeft = 50;
             int offsetTop = 20;
@@ -49,6 +49,8 @@ namespace TetrisGame
 
             stage = new Stage(pixelsY, pixelsX, screen);
             stage.blockStucked += Stage_blockStucked;
+
+            
         }
 
         private Block GetRandomBlock()
@@ -102,6 +104,11 @@ namespace TetrisGame
             stage.MoveActiveToRight();
         }
 
+        private void btnRotate_Click(object sender, EventArgs e)
+        {
+            stage.RotateActiveBlock();
+        }
+
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             /*
@@ -122,6 +129,8 @@ namespace TetrisGame
             //movementQueue.Enqueue(stage.Update);
             stage.MoveActiveDown();
         }
+
+        
     }
 }
 
