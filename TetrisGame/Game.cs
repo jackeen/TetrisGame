@@ -16,13 +16,9 @@ namespace TetrisGame
         DotScreen screen;
         Stage stage;
 
-        //Queue<Action> movementQueue;
-
         public Game()
         {
             InitializeComponent();
-
-            //movementQueue = new Queue<Action>();
         }
 
         private void SetpuPlayGround()
@@ -55,7 +51,28 @@ namespace TetrisGame
 
         private Block GetRandomBlock()
         {
-            return new LShape();
+            Random r = new Random();
+            int n = r.Next(0, 3);
+
+            Block b;
+
+            switch (n)
+            {
+                case 0:
+                    b = new LShape();
+                    break;
+                case 1:
+                    b = new ZShape();
+                    break;
+                case 2:
+                    b = new IShape();
+                    break;
+                default:
+                    b = new OShape();
+                    break;
+
+            }
+            return b;
         }
 
         private void Stage_blockStucked(object sender, EventArgs e)

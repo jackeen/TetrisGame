@@ -15,7 +15,7 @@ namespace TetrisGame
         public List<(int, int)>[] Shapes;
 
         // the current shape number to index a shape in "shapes"
-        public int ShapeNum = 0;
+        public int ShapeNum;
 
         // to record the movement history for a block
         // ????
@@ -24,13 +24,21 @@ namespace TetrisGame
         // the X and Y border for limiting the block moving 
         public int limitY, limitX;
 
-        // current point of the block 
+        // current position of the block 
         public int Y, X;
 
         public Block()
         {
             historyPoint = new Queue<(int, int, int)>();
             Shapes = new List<(int, int)>[4];
+
+            RandomRotate();
+        }
+
+        private void RandomRotate()
+        {
+            Random r = new Random();
+            ShapeNum = r.Next(0, 3);
         }
 
         /// <summary>

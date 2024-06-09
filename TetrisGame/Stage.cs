@@ -45,7 +45,6 @@ namespace TetrisGame
             block.X = x;
             block.Y = y;
             activeBlock = block;
-            //activeBlockDisconnected = false;
 
             SetLimitForActiveBlock();
             recordHistoryPosition();
@@ -199,11 +198,15 @@ namespace TetrisGame
             recordHistoryPosition();
             activeBlock.Rotate();
             SetLimitForActiveBlock();
+
+            // sometimes, the "Rotate" will cause the part of the block outside of the screen
+            // this will fix this
+            activeBlock.X = Math.Min(activeBlock.limitX, activeBlock.X);
         }
 
         public void CleanActiveBlock()
         {
-            // consume the history of movement
+            // clean the history of movement sign
             if (activeBlock.historyPoint.Count > 0)
             {
                 (int y, int x, int shapeN) blockPoint = activeBlock.historyPoint.Dequeue();
