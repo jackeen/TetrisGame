@@ -27,6 +27,8 @@ namespace TetrisGame
         // current position of the block 
         public int Y, X;
 
+        public bool isMoving = true;
+
         public Block()
         {
             historyPoint = new Queue<(int, int, int)>();

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -47,9 +48,11 @@ namespace TetrisGame
             screenBg.SendToBack();
 
             stage = new Stage(pixelsY, pixelsX, screen);
-            stage.blockStucked += Stage_blockStucked;
+            stage.activeblockDie += Stage_blockStucked;
             stage.linesCleaned += Stage_linesCleaned;
-            
+
+            timerUpdate.Interval = 50;
+            timerMoveDown.Interval = 1000;
         }
 
         private void Stage_linesCleaned(object sender, LineCleanEventArgs e)
@@ -64,7 +67,7 @@ namespace TetrisGame
         private Block GetRandomBlock()
         {
             Random r = new Random();
-            int n = r.Next(0, 5);
+            int n = r.Next(0, 7);
 
             switch (n)
             {
@@ -83,8 +86,20 @@ namespace TetrisGame
                 case 4:
                     return new HShape();
 
+                case 5:
+                    return new RZShape();
+
+                case 6:
+                    return new DShape();
+
             }
             return new OShape();
+        }
+
+        private void DropRandomBlock()
+        {
+            stage.DropBlock(0, 8, GetRandomBlock());
+            Console.WriteLine("----------------------------");
         }
 
         /// <summary>
@@ -94,8 +109,7 @@ namespace TetrisGame
         /// <param name="e"></param>
         private void Stage_blockStucked(object sender, EventArgs e)
         {
-            timerUpdate.Enabled = false;
-            timerMoveDown.Enabled = false;
+            DropRandomBlock();
         }
 
         private void game_Load(object sender, EventArgs e)
@@ -105,7 +119,7 @@ namespace TetrisGame
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            stage.DropBlock(0, 8, GetRandomBlock());
+            DropRandomBlock();
             timerUpdate.Enabled = true;
             timerMoveDown.Enabled = true;
         }
@@ -148,10 +162,10 @@ namespace TetrisGame
 
         private void timerMoveDown_Tick(object sender, EventArgs e)
         {
+            //Console.WriteLine($"move down tick {DateTime.Now.Second}");
             stage.MoveActiveDown();
         }
 
-        
     }
 }
 

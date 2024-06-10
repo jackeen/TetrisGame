@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Block.cs" />
     <Compile Include="DotScreen.cs" />
+    <Compile Include="DShape.cs" />
     <Compile Include="Game.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +61,7 @@
     <Compile Include="OShape.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RZShape.cs" />
     <Compile Include="Stage.cs" />
     <Compile Include="ZShape.cs" />
     <EmbeddedResource Include="Game.resx">

@@ -17,7 +17,7 @@ namespace TetrisGame
         private HashSet<(int, int)>[] existedPointsFromBlock;
 
         
-        public event EventHandler blockStucked;
+        public event EventHandler activeblockDie;
         public event EventHandler<LineCleanEventArgs> linesCleaned;
 
         public Stage(int h, int w, DotScreen ds)
@@ -69,10 +69,10 @@ namespace TetrisGame
 
         public void MoveActiveToRight()
         {
-            /*if (activeBlock == null)
+            if (activeBlock == null || !activeBlock.isMoving)
             {
                 return;
-            }*/
+            }
 
             recordHistoryPosition();
 
@@ -92,10 +92,10 @@ namespace TetrisGame
 
         public void MoveActiveToLeft()
         {
-            /*if (activeBlock == null)
+            if (activeBlock == null || !activeBlock.isMoving)
             {
                 return;
-            }*/
+            }
 
             recordHistoryPosition();
 
@@ -115,21 +115,22 @@ namespace TetrisGame
 
         public void MoveActiveDown()
         {
-            /*if (activeBlock == null)
+            if (activeBlock == null || !activeBlock.isMoving)
             {
                 return;
-            }*/
+            }
             
             recordHistoryPosition();
 
             int y = activeBlock.Y + 1;
             int x = activeBlock.X;
 
+            Console.WriteLine($"move to {y} in Y");
+
             // hit some existed block
             bool res = detectCollisionY(y, x);
             if (res)
             {
-                FillBlockToExistedGroup();
                 blockFixed();
                 return;
             }
@@ -137,18 +138,26 @@ namespace TetrisGame
             // hit bottom
             if (y > activeBlock.limitY)
             {
-                y = activeBlock.limitY;
-                FillBlockToExistedGroup();
+                activeBlock.Y = activeBlock.limitY;
                 blockFixed();
+                return;
             }
+
             activeBlock.Y = y;
             
         }
 
         private void blockFixed()
         {
-            blockStucked?.Invoke(this, EventArgs.Empty);
+            if (!activeBlock.isMoving)
+            {
+                return;
+            }
+            activeBlock.isMoving = false;
+            FillBlockToExistedGroup();
             detectAndCleanFullLines();
+
+            activeblockDie?.Invoke(this, EventArgs.Empty);
         }
 
         private void detectAndCleanFullLines()
@@ -278,6 +287,12 @@ namespace TetrisGame
 
         public void RotateActiveBlock()
         {
+
+            if (activeBlock == null || !activeBlock.isMoving)
+            {
+                return;
+            }
+
             recordHistoryPosition();
             activeBlock.Rotate();
             SetLimitForActiveBlock();
@@ -312,13 +327,11 @@ namespace TetrisGame
 
         public void Update()
         {
-            /*if (activeBlock != null)
+            if (activeBlock != null && activeBlock.isMoving)
             {
-                
-            }*/
-
-            CleanActiveBlock();
-            DrawActiveBlock();
+                CleanActiveBlock();
+                DrawActiveBlock();
+            }
         }
     }
 
