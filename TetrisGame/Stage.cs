@@ -26,10 +26,15 @@ namespace TetrisGame
             height = h;
             screen = ds;
 
+            InitExistedPoints();
+        }
+
+        private void InitExistedPoints()
+        {
             // init bottom pixels expressed by (int y, int x)
             // and each line wrapped in a set
-            existedPointsFromBlock = new HashSet<(int, int)>[h];
-            for (int y = 0; y < h; y++)
+            existedPointsFromBlock = new HashSet<(int, int)>[height];
+            for (int y = 0; y < height; y++)
             {
                 existedPointsFromBlock[y] = new HashSet<(int, int)>();
             }
@@ -347,9 +352,16 @@ namespace TetrisGame
             }
         }
 
+        public bool HasActiveBlock()
+        {
+            return activeBlock != null;
+        }
+
         public void Reset()
         {
-
+            InitExistedPoints();
+            activeBlock = null;
+            screen.Reset();
         }
     }
 

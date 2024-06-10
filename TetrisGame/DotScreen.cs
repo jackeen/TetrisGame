@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -78,5 +79,15 @@ namespace TetrisGame
             pixelMetrix[pixel.y, pixel.x].BackColor = openColor;
         }
 
+        public void Reset()
+        {
+            for (int y = 0; y < metrixY; y++)
+            {
+                for (int x = 0; x < metrixX; x++)
+                {
+                    pixelMetrix[y, x].BackColor = closeColor;
+                }
+            }
+        }
     }
 }

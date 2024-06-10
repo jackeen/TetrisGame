@@ -64,6 +64,8 @@ namespace TetrisGame
 
             timerUpdate.Interval = timerUpdateTime;
             timerMoveDown.Interval = timerMoveDownTime;
+
+            btnReset.Enabled = false;
         }
 
         /// <summary>
@@ -76,6 +78,7 @@ namespace TetrisGame
             isGameOver = true;
             pauseGame(true);
             MessageBox.Show("Game over");
+            btnReset.Enabled = true;
         }
 
         private void BtnDown_MouseUp(object sender, MouseEventArgs e)
@@ -154,16 +157,25 @@ namespace TetrisGame
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if (!isRunning)
+            if (!stage.HasActiveBlock())
             {
                 DropRandomBlock();
             }
-            pauseGame(false);
-        }
 
-        private void btnPause_Click(object sender, EventArgs e)
-        {
-            pauseGame(true);
+            Button btn = sender as Button;
+
+            if (isRunning)
+            {
+                pauseGame(true);
+                btn.Text = "Play";
+            }
+            else
+            {
+                pauseGame(false);
+                btn.Text = "Pause";
+            }
+
+            
         }
 
         private void pauseGame(bool s)
@@ -175,7 +187,7 @@ namespace TetrisGame
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
-            //MessageBox.Show(e.KeyCode.ToString());
+            MessageBox.Show(e.KeyCode.ToString());
             switch (e.KeyCode.ToString())
             {
                 case "Left":
@@ -214,7 +226,26 @@ namespace TetrisGame
             stage.MoveActiveDown();
         }
 
-        
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            string msg = "Do you want to reset the game?";
+            DialogResult res = MessageBox.Show(msg, "Alert", MessageBoxButtons.OKCancel);
+            if (res == DialogResult.OK)
+            {
+                isGameOver = false;
+                
+                timerMoveDown.Enabled = false;
+                timerUpdate.Enabled = false;
+                stage.Reset();
+                DropRandomBlock();
+
+                timerMoveDown.Interval = timerMoveDownTime;
+                timerMoveDown.Enabled = true;
+                timerUpdate.Enabled = true;
+
+                btnReset.Enabled = false;
+            }
+        }
     }
 }
 
