@@ -333,6 +333,11 @@ namespace TetrisGame
                 DrawActiveBlock();
             }
         }
+
+        public void Reset()
+        {
+
+        }
     }
 
     public class LineCleanEventArgs: EventArgs

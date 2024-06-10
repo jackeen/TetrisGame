@@ -14,8 +14,14 @@ namespace TetrisGame
     public partial class Game : Form
     {
 
-        DotScreen screen;
-        Stage stage;
+        private DotScreen screen;
+        private Stage stage;
+
+        private int score = 0;
+        private bool isRunning = false;
+
+        private int timerUpdateTime = 50;
+        private int timerMoveDownTime = 1000;
 
         public Game()
         {
@@ -51,13 +57,27 @@ namespace TetrisGame
             stage.activeblockDie += Stage_blockStucked;
             stage.linesCleaned += Stage_linesCleaned;
 
-            timerUpdate.Interval = 50;
-            timerMoveDown.Interval = 1000;
+            btnDown.MouseDown += BtnDown_MouseDown;
+            btnDown.MouseUp += BtnDown_MouseUp;
+
+            timerUpdate.Interval = timerUpdateTime;
+            timerMoveDown.Interval = timerMoveDownTime;
+        }
+
+        private void BtnDown_MouseUp(object sender, MouseEventArgs e)
+        {
+            timerMoveDown.Interval = timerMoveDownTime;
+        }
+
+        private void BtnDown_MouseDown(object sender, MouseEventArgs e)
+        {
+            timerMoveDown.Interval = 80;
         }
 
         private void Stage_linesCleaned(object sender, LineCleanEventArgs e)
         {
-            MessageBox.Show($"cut {e.lineNumber} line(s).");
+            //MessageBox.Show($"cut {e.lineNumber} line(s).");
+            labelScore.Text = $"SCORE: {++score}";
         }
 
         /// <summary>
@@ -99,7 +119,7 @@ namespace TetrisGame
         private void DropRandomBlock()
         {
             stage.DropBlock(0, 8, GetRandomBlock());
-            Console.WriteLine("----------------------------");
+            //Console.WriteLine("----------------------------");
         }
 
         /// <summary>
@@ -119,9 +139,19 @@ namespace TetrisGame
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            DropRandomBlock();
+            if (!isRunning)
+            {
+                DropRandomBlock();
+            }
+            isRunning = true;
             timerUpdate.Enabled = true;
             timerMoveDown.Enabled = true;
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            timerUpdate.Enabled = false;
+            timerMoveDown.Enabled = false;
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
@@ -140,13 +170,11 @@ namespace TetrisGame
 
         private void btnLeft_Click(object sender, EventArgs e)
         {
-            
             stage.MoveActiveToLeft();
         }
 
         private void btnRight_Click(object sender, EventArgs e)
         {
-            
             stage.MoveActiveToRight();
         }
 
@@ -154,6 +182,7 @@ namespace TetrisGame
         {
             stage.RotateActiveBlock();
         }
+
 
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
@@ -166,6 +195,7 @@ namespace TetrisGame
             stage.MoveActiveDown();
         }
 
+        
     }
 }
 

@@ -36,6 +36,9 @@
             this.btnRight = new System.Windows.Forms.Button();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.btnRotate = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.btnDown = new System.Windows.Forms.Button();
+            this.labelScore = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // screenBg
@@ -48,10 +51,10 @@
             // 
             // btnPlay
             // 
-            this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlay.Location = new System.Drawing.Point(949, 12);
+            this.btnPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPlay.Location = new System.Drawing.Point(829, 237);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(301, 115);
+            this.btnPlay.Size = new System.Drawing.Size(250, 115);
             this.btnPlay.TabIndex = 1;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -65,7 +68,7 @@
             // btnLeft
             // 
             this.btnLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLeft.Location = new System.Drawing.Point(799, 227);
+            this.btnLeft.Location = new System.Drawing.Point(828, 419);
             this.btnLeft.Name = "btnLeft";
             this.btnLeft.Size = new System.Drawing.Size(151, 141);
             this.btnLeft.TabIndex = 2;
@@ -76,7 +79,7 @@
             // btnRight
             // 
             this.btnRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRight.Location = new System.Drawing.Point(1162, 227);
+            this.btnRight.Location = new System.Drawing.Point(1191, 419);
             this.btnRight.Name = "btnRight";
             this.btnRight.Size = new System.Drawing.Size(151, 141);
             this.btnRight.TabIndex = 3;
@@ -90,8 +93,8 @@
             // 
             // btnRotate
             // 
-            this.btnRotate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRotate.Location = new System.Drawing.Point(981, 227);
+            this.btnRotate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRotate.Location = new System.Drawing.Point(1010, 419);
             this.btnRotate.Name = "btnRotate";
             this.btnRotate.Size = new System.Drawing.Size(151, 141);
             this.btnRotate.TabIndex = 4;
@@ -99,12 +102,51 @@
             this.btnRotate.UseVisualStyleBackColor = true;
             this.btnRotate.Click += new System.EventHandler(this.btnRotate_Click);
             // 
+            // btnPause
+            // 
+            this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPause.Location = new System.Drawing.Point(1093, 237);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(250, 115);
+            this.btnPause.TabIndex = 5;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // btnDown
+            // 
+            this.btnDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDown.Location = new System.Drawing.Point(1010, 596);
+            this.btnDown.Name = "btnDown";
+            this.btnDown.Size = new System.Drawing.Size(151, 141);
+            this.btnDown.TabIndex = 6;
+            this.btnDown.Text = "V";
+            this.btnDown.UseVisualStyleBackColor = true;
+            // 
+            // labelScore
+            // 
+            this.labelScore.BackColor = System.Drawing.Color.Black;
+            this.labelScore.Font = new System.Drawing.Font("Courier New", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelScore.ForeColor = System.Drawing.Color.White;
+            this.labelScore.Location = new System.Drawing.Point(829, 93);
+            this.labelScore.Margin = new System.Windows.Forms.Padding(5);
+            this.labelScore.Name = "labelScore";
+            this.labelScore.Padding = new System.Windows.Forms.Padding(5);
+            this.labelScore.Size = new System.Drawing.Size(514, 89);
+            this.labelScore.TabIndex = 7;
+            this.labelScore.Text = "No Score";
+            this.labelScore.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Game
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.BackColor = System.Drawing.Color.LightSlateGray;
             this.ClientSize = new System.Drawing.Size(1529, 856);
+            this.Controls.Add(this.labelScore);
+            this.Controls.Add(this.btnDown);
+            this.Controls.Add(this.btnPause);
             this.Controls.Add(this.btnRotate);
             this.Controls.Add(this.btnRight);
             this.Controls.Add(this.btnLeft);
@@ -128,6 +170,9 @@
         private System.Windows.Forms.Button btnRight;
         private System.Windows.Forms.Timer timerUpdate;
         private System.Windows.Forms.Button btnRotate;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Button btnDown;
+        private System.Windows.Forms.Label labelScore;
     }
 }
 
