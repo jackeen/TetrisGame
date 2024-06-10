@@ -16,7 +16,7 @@ namespace TetrisGame
         // 
         private HashSet<(int, int)>[] existedPointsFromBlock;
 
-        
+        public event EventHandler linesNotEmpty;
         public event EventHandler activeblockDie;
         public event EventHandler<LineCleanEventArgs> linesCleaned;
 
@@ -154,10 +154,23 @@ namespace TetrisGame
                 return;
             }
             activeBlock.isMoving = false;
+
             FillBlockToExistedGroup();
             detectAndCleanFullLines();
+            detectAllLinesNotEmpty();
 
             activeblockDie?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void detectAllLinesNotEmpty()
+        {
+            HashSet<(int, int)> firstLine = existedPointsFromBlock[0];
+
+            if (firstLine.Count != 0)
+            {
+                linesNotEmpty?.Invoke(this, EventArgs.Empty);
+            }
+            
         }
 
         private void detectAndCleanFullLines()

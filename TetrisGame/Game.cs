@@ -19,9 +19,10 @@ namespace TetrisGame
 
         private int score = 0;
         private bool isRunning = false;
+        private bool isGameOver = false;
 
         private int timerUpdateTime = 50;
-        private int timerMoveDownTime = 1000;
+        private int timerMoveDownTime = 500;
 
         public Game()
         {
@@ -56,12 +57,25 @@ namespace TetrisGame
             stage = new Stage(pixelsY, pixelsX, screen);
             stage.activeblockDie += Stage_blockStucked;
             stage.linesCleaned += Stage_linesCleaned;
+            stage.linesNotEmpty += Stage_linesNotEmpty;
 
             btnDown.MouseDown += BtnDown_MouseDown;
             btnDown.MouseUp += BtnDown_MouseUp;
 
             timerUpdate.Interval = timerUpdateTime;
             timerMoveDown.Interval = timerMoveDownTime;
+        }
+
+        /// <summary>
+        /// GameOver
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Stage_linesNotEmpty(object sender, EventArgs e)
+        {
+            isGameOver = true;
+            pauseGame(true);
+            MessageBox.Show("Game over");
         }
 
         private void BtnDown_MouseUp(object sender, MouseEventArgs e)
@@ -71,13 +85,14 @@ namespace TetrisGame
 
         private void BtnDown_MouseDown(object sender, MouseEventArgs e)
         {
-            timerMoveDown.Interval = 80;
+            timerMoveDown.Interval = timerMoveDownTime / 10;
         }
 
         private void Stage_linesCleaned(object sender, LineCleanEventArgs e)
         {
             //MessageBox.Show($"cut {e.lineNumber} line(s).");
-            labelScore.Text = $"SCORE: {++score}";
+            score += e.lineNumber;
+            labelScore.Text = $"SCORE: {score}";
         }
 
         /// <summary>
@@ -87,7 +102,7 @@ namespace TetrisGame
         private Block GetRandomBlock()
         {
             Random r = new Random();
-            int n = r.Next(0, 7);
+            int n = r.Next(0, 6);
 
             switch (n)
             {
@@ -109,8 +124,8 @@ namespace TetrisGame
                 case 5:
                     return new RZShape();
 
-                case 6:
-                    return new DShape();
+                //case 6:
+                //    return new DShape();
 
             }
             return new OShape();
@@ -143,15 +158,19 @@ namespace TetrisGame
             {
                 DropRandomBlock();
             }
-            isRunning = true;
-            timerUpdate.Enabled = true;
-            timerMoveDown.Enabled = true;
+            pauseGame(false);
         }
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            timerUpdate.Enabled = false;
-            timerMoveDown.Enabled = false;
+            pauseGame(true);
+        }
+
+        private void pauseGame(bool s)
+        {
+            isRunning = !s;
+            timerUpdate.Enabled = !s;
+            timerMoveDown.Enabled = !s;
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
