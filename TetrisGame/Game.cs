@@ -81,14 +81,23 @@ namespace TetrisGame
             btnReset.Enabled = true;
         }
 
-        private void BtnDown_MouseUp(object sender, MouseEventArgs e)
+        private void DownSpeedUp()
+        {
+            timerMoveDown.Interval = timerMoveDownTime / 10;
+        }
+        private void DownSpeedReserve()
         {
             timerMoveDown.Interval = timerMoveDownTime;
         }
 
+        private void BtnDown_MouseUp(object sender, MouseEventArgs e)
+        {
+            DownSpeedReserve();
+        }
+
         private void BtnDown_MouseDown(object sender, MouseEventArgs e)
         {
-            timerMoveDown.Interval = timerMoveDownTime / 10;
+            DownSpeedUp();
         }
 
         private void Stage_linesCleaned(object sender, LineCleanEventArgs e)
@@ -187,15 +196,33 @@ namespace TetrisGame
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
-            MessageBox.Show(e.KeyCode.ToString());
-            switch (e.KeyCode.ToString())
+            if (e.KeyCode == Keys.S)
             {
-                case "Left":
+                DownSpeedUp();
+            }
+        }
+
+        private void Game_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch (e.KeyChar.ToString())
+            {
+                case "a":
                     stage.MoveActiveToLeft();
                     break;
-                case "Right":
+                case "d":
                     stage.MoveActiveToRight();
                     break;
+                case "w":
+                    stage.RotateActiveBlock();
+                    break;
+            }
+        }
+
+        private void Game_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.S)
+            {
+                DownSpeedReserve();
             }
         }
 
@@ -246,6 +273,7 @@ namespace TetrisGame
                 btnReset.Enabled = false;
             }
         }
+
     }
 }
 

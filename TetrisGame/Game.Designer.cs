@@ -158,6 +158,8 @@
             this.Text = "Teris Game";
             this.Load += new System.EventHandler(this.game_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Game_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Game_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Game_KeyUp);
             this.ResumeLayout(false);
 
         }
