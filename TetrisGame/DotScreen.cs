@@ -9,6 +9,10 @@ using System.Windows.Forms;
 
 namespace TetrisGame
 {
+
+    /// <summary>
+    /// Provide the basic dot screen to display blocks and its moving
+    /// </summary>
     internal class DotScreen
     {
 
@@ -25,6 +29,13 @@ namespace TetrisGame
 
         Form stageForm;
 
+
+        /// <summary>
+        /// Simulation a pixel screen by picturebox
+        /// </summary>
+        /// <param name="y"></param>
+        /// <param name="x"></param>
+        /// <param name="stage"></param>
         public DotScreen(int y, int x, Form stage)
         {
             metrixY = y;
@@ -35,16 +46,29 @@ namespace TetrisGame
             pixelMetrix = new PictureBox[y, x];
         }
 
+        /// <summary>
+        /// Return the whole width based on a pixel width and the gap size
+        /// </summary>
+        /// <returns></returns>
         public int GetWidth()
         {
             return (pixelSize + gap) * metrixX;
         }
 
+        /// <summary>
+        /// Return the while height based on a pixel height and the gap size
+        /// </summary>
+        /// <returns></returns>
         public int GetHeight()
         {
             return (pixelSize + gap) * metrixY;
         }
 
+        /// <summary>
+        /// Init all pixels and put them on the stage at right position
+        /// </summary>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
         public void SetupPixel(int offsetX, int offsetY)
         {
             for (int y = 0; y < metrixY; y++)
@@ -84,6 +108,9 @@ namespace TetrisGame
             pixelMetrix[pixel.y, pixel.x].BackColor = color;
         }
 
+        /// <summary>
+        /// Draw all pixels as default color 
+        /// </summary>
         public void Reset()
         {
             for (int y = 0; y < metrixY; y++)

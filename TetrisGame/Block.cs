@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace TetrisGame
 {
+
+    /// <summary>
+    /// This module defines some behaviours of the blocks
+    /// All specific block inherit form this class
+    /// </summary>
     internal class Block
     {
         // current shape data
@@ -18,7 +23,7 @@ namespace TetrisGame
         public int ShapeNum;
 
         // to record the movement history for a block
-        // ????
+        // for updating movement
         public Queue<(int, int, int)> historyPoint;
 
         // the X and Y border for limiting the block moving 
@@ -37,6 +42,9 @@ namespace TetrisGame
             RandomRotate();
         }
 
+        /// <summary>
+        /// Random the block in its shape by rotating
+        /// </summary>
         private void RandomRotate()
         {
             Random r = new Random();
@@ -44,7 +52,7 @@ namespace TetrisGame
         }
 
         /// <summary>
-        /// 
+        /// Return the size combined by width and hight gouped by a tuple
         /// </summary>
         /// <returns></returns>
         public (int, int) GetSize()
@@ -61,6 +69,9 @@ namespace TetrisGame
             return (h + 1, w + 1);
         }
 
+        /// <summary>
+        /// Select a shape in 4 after rotating
+        /// </summary>
         public void Rotate()
         {
             ShapeNum++;

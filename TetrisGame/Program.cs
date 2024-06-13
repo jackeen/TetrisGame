@@ -1,4 +1,11 @@
-﻿using System;
+﻿/**
+ * Tetris game
+ * by Jia zhang, ID 1578438
+ * 
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

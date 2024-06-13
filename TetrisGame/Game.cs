@@ -11,6 +11,10 @@ using System.Windows.Forms;
 
 namespace TetrisGame
 {
+
+    /// <summary>
+    /// Game logic and the other user interface for controlling and interacting with the player
+    /// </summary>
     public partial class Game : Form
     {
 
@@ -81,18 +85,25 @@ namespace TetrisGame
             btnReset.Enabled = true;
         }
 
+        /// <summary>
+        /// Speed up the block by speed up the timer
+        /// </summary>
         private void DownSpeedUp()
         {
             timerMoveDown.Interval = timerMoveDownTime / 10;
         }
-        private void DownSpeedReserve()
+
+        /// <summary>
+        /// Change the down speed to normal speed
+        /// </summary>
+        private void DownSpeedBackNormal()
         {
             timerMoveDown.Interval = timerMoveDownTime;
         }
 
         private void BtnDown_MouseUp(object sender, MouseEventArgs e)
         {
-            DownSpeedReserve();
+            DownSpeedBackNormal();
         }
 
         private void BtnDown_MouseDown(object sender, MouseEventArgs e)
@@ -164,6 +175,12 @@ namespace TetrisGame
             SetpuPlayGround();
         }
 
+        /// <summary>
+        /// Start to play the game.
+        /// This button used for pause and play
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPlay_Click(object sender, EventArgs e)
         {
             if (!stage.HasActiveBlock())
@@ -187,6 +204,10 @@ namespace TetrisGame
             
         }
 
+        /// <summary>
+        /// Pause the game by disabled the timers
+        /// </summary>
+        /// <param name="s"></param>
         private void pauseGame(bool s)
         {
             isRunning = !s;
@@ -194,6 +215,11 @@ namespace TetrisGame
             timerMoveDown.Enabled = !s;
         }
 
+        /// <summary>
+        /// Start speeding up temporary
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.S)
@@ -202,6 +228,12 @@ namespace TetrisGame
             }
         }
 
+        /// <summary>
+        /// use A and D to control direction of moving block
+        /// W for rotate the block
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Game_KeyPress(object sender, KeyPressEventArgs e)
         {
             switch (e.KeyChar.ToString())
@@ -218,11 +250,16 @@ namespace TetrisGame
             }
         }
 
+        /// <summary>
+        /// Stop the active block speeding up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Game_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.S)
             {
-                DownSpeedReserve();
+                DownSpeedBackNormal();
             }
         }
 

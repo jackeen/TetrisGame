@@ -8,15 +8,23 @@ using System.Windows.Forms;
 
 namespace TetrisGame
 {
+
+    /// <summary>
+    /// The stage for checking collision between blocks and borders.
+    /// Also for checking game ending and clean the full pixels line for score up
+    /// </summary>
     internal class Stage
     {
         private int width, height;
         private DotScreen screen;
+
+        // current moving block in the screen
         private Block activeBlock;
 
-        // 
+        // all fixed pixels stored here
         private HashSet<(int, int)>[] existedPointsFromBlock;
 
+        // events for trigger game's behavior
         public event EventHandler linesNotEmpty;
         public event EventHandler activeblockDie;
         public event EventHandler<LineCleanEventArgs> linesCleaned;
@@ -30,6 +38,10 @@ namespace TetrisGame
             InitExistedPoints();
         }
 
+
+        /// <summary>
+        /// Initialize the storage for fixed pixels
+        /// </summary>
         private void InitExistedPoints()
         {
             // init bottom pixels expressed by (int y, int x)
@@ -41,6 +53,9 @@ namespace TetrisGame
             }
         }
 
+        /// <summary>
+        /// Set current moving block's border based on its width and hight
+        /// </summary>
         private void SetLimitForActiveBlock()
         {
             (int h, int w) size = activeBlock.GetSize();
@@ -73,6 +88,9 @@ namespace TetrisGame
             activeBlock.historyPoint.Enqueue((activeBlock.Y, activeBlock.X, activeBlock.ShapeNum));
         }
 
+        /// <summary>
+        /// Move the current moving block to right step and check the border not going outside
+        /// </summary>
         public void MoveActiveToRight()
         {
             if (activeBlock == null || !activeBlock.isMoving)
@@ -96,6 +114,9 @@ namespace TetrisGame
             activeBlock.X = x;
         }
 
+        /// <summary>
+        /// Move the current moving block to left step and limit it not going outside
+        /// </summary>
         public void MoveActiveToLeft()
         {
             if (activeBlock == null || !activeBlock.isMoving)
@@ -119,6 +140,10 @@ namespace TetrisGame
             activeBlock.X = x;
         }
 
+        /// <summary>
+        /// Move the current moving block down step, 
+        /// and check it wether or not hit the existed pixels or the bottom of the screen.
+        /// </summary>
         public void MoveActiveDown()
         {
             if (activeBlock == null || !activeBlock.isMoving)
@@ -153,6 +178,10 @@ namespace TetrisGame
             
         }
 
+        /// <summary>
+        /// When find out some collision on bottom of screen or existed pixels,
+        /// This will invoke for fixing the current block and checking full line to clean.
+        /// </summary>
         private void blockFixed()
         {
             if (!activeBlock.isMoving)
@@ -168,6 +197,9 @@ namespace TetrisGame
             activeblockDie?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Detect there is no empty line for gaming 
+        /// </summary>
         private void detectAllLinesNotEmpty()
         {
             HashSet<(int, int)> firstLine = existedPointsFromBlock[0];
@@ -179,6 +211,10 @@ namespace TetrisGame
             
         }
 
+        /// <summary>
+        /// Detect the all lines in the screen,
+        /// If there are full line existed, delete them and redraw the screen
+        /// </summary>
         private void detectAndCleanFullLines()
         {
             int fullLineNum = 0;
@@ -230,6 +266,9 @@ namespace TetrisGame
             
         }
 
+        /// <summary>
+        /// Reset the all pixels in the screen
+        /// </summary>
         private void RedrawScreen()
         {
             for (int i = 0; i < height; i++)
@@ -247,6 +286,12 @@ namespace TetrisGame
             }
         }
 
+        /// <summary>
+        /// detext collision in every line
+        /// </summary>
+        /// <param name="blockY"></param>
+        /// <param name="blockX"></param>
+        /// <returns></returns>
         private bool detectCollisionX(int blockY, int blockX)
         {
 
@@ -294,6 +339,10 @@ namespace TetrisGame
             return false;
         }
 
+
+        /// <summary>
+        /// put all pixels of the active block to fixed group
+        /// </summary>
         private void FillBlockToExistedGroup()
         {
             foreach ((int y, int x) pixel in activeBlock.Data)
@@ -305,6 +354,11 @@ namespace TetrisGame
             DrawActiveBlock();
         }
 
+        /// <summary>
+        /// Rotate the moving block,
+        /// Before do it record current positon in the history queue
+        /// After rotating, recalculate the limitation of the block
+        /// </summary>
         public void RotateActiveBlock()
         {
 
@@ -322,6 +376,9 @@ namespace TetrisGame
             activeBlock.X = Math.Min(activeBlock.limitX, activeBlock.X);
         }
 
+        /// <summary>
+        /// Clean the trace history in the queue, after the block moving 
+        /// </summary>
         public void CleanActiveBlock()
         {
             // clean the history of movement sign
@@ -336,6 +393,9 @@ namespace TetrisGame
             }
         }
 
+        /// <summary>
+        /// Draw the moving block at the screen
+        /// </summary>
         public void DrawActiveBlock()
         {
             activeBlock.Data.ForEach(((int y, int x) p) =>
@@ -345,6 +405,9 @@ namespace TetrisGame
             });
         }
 
+        /// <summary>
+        /// Draw the moving block at the screen by hightlight color
+        /// </summary>
         public void DrawActiveBlockHighLight()
         {
             activeBlock.Data.ForEach(((int y, int x) p) =>
@@ -354,6 +417,9 @@ namespace TetrisGame
             });
         }
 
+        /// <summary>
+        /// Update the active block based on its new position
+        /// </summary>
         public void Update()
         {
             if (activeBlock != null && activeBlock.isMoving)
@@ -363,11 +429,18 @@ namespace TetrisGame
             }
         }
 
+        /// <summary>
+        /// Return wether or not existed the active block
+        /// </summary>
+        /// <returns></returns>
         public bool HasActiveBlock()
         {
             return activeBlock != null;
         }
 
+        /// <summary>
+        /// Reset the stage for new game
+        /// </summary>
         public void Reset()
         {
             InitExistedPoints();
