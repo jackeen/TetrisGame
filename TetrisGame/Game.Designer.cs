@@ -39,6 +39,7 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.labelScore = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // screenBg
@@ -138,6 +139,15 @@
             this.labelScore.Text = "No Score";
             this.labelScore.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label1
+            // 
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(848, 793);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(588, 23);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Keyboard: W for rotate, A for left, D for right, S for speedup";
+            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
@@ -145,6 +155,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.LightSlateGray;
             this.ClientSize = new System.Drawing.Size(1529, 856);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.labelScore);
             this.Controls.Add(this.btnDown);
             this.Controls.Add(this.btnReset);
@@ -176,6 +187,7 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Label labelScore;
+        private System.Windows.Forms.Label label1;
     }
 }
 

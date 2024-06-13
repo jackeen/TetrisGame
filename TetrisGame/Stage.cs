@@ -367,13 +367,16 @@ namespace TetrisGame
                 return;
             }
 
+            // record the trace
             recordHistoryPosition();
+
             activeBlock.Rotate();
             SetLimitForActiveBlock();
 
             // sometimes, the "Rotate" will cause the part of the block outside of the screen
             // this will fix this
             activeBlock.X = Math.Min(activeBlock.limitX, activeBlock.X);
+            activeBlock.Y = Math.Min(activeBlock.limitY, activeBlock.Y);
         }
 
         /// <summary>
