@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace TetrisGame
 
             SetLimitForActiveBlock();
             recordHistoryPosition();
-            DrawActiveBlock();
+            DrawActiveBlockHighLight();
         }
 
         /// <summary>
@@ -301,6 +302,7 @@ namespace TetrisGame
                 int absX = pixel.x + activeBlock.X;
                 existedPointsFromBlock[absY].Add((absY, absX));
             }
+            DrawActiveBlock();
         }
 
         public void RotateActiveBlock()
@@ -343,12 +345,21 @@ namespace TetrisGame
             });
         }
 
+        public void DrawActiveBlockHighLight()
+        {
+            activeBlock.Data.ForEach(((int y, int x) p) =>
+            {
+                (int, int) absPixel = (p.y + activeBlock.Y, p.x + activeBlock.X);
+                screen.Draw(absPixel, Color.DarkCyan);
+            });
+        }
+
         public void Update()
         {
             if (activeBlock != null && activeBlock.isMoving)
             {
                 CleanActiveBlock();
-                DrawActiveBlock();
+                DrawActiveBlockHighLight();
             }
         }
 

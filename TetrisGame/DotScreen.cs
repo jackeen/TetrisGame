@@ -79,6 +79,11 @@ namespace TetrisGame
             pixelMetrix[pixel.y, pixel.x].BackColor = openColor;
         }
 
+        public void Draw((int y, int x) pixel, Color color)
+        {
+            pixelMetrix[pixel.y, pixel.x].BackColor = color;
+        }
+
         public void Reset()
         {
             for (int y = 0; y < metrixY; y++)
